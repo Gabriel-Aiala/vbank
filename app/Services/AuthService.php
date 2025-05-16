@@ -4,18 +4,20 @@ namespace App\Services;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use App\Repositories\Eloquent\PersonRepository;
-use App\Repositories\Eloquent\CompanyRepository;
-use App\Repositories\Eloquent\EntityRepository;
-use App\Repositories\Eloquent\CredentialRepository;
+use App\Repositories\Interfaces\PersonRepositoryInterface;
+use App\Repositories\Interfaces\CompanyRepositoryInterface;
+use App\Repositories\Interfaces\EntityRepositoryInterface;
+use App\Repositories\Interfaces\CredentialRepositoryInterface;
+use Tymon\JWTAuth\Facades\JWTAuth;
+use App\Exceptions\InvalidCredentialsException;
 
 class AuthService
 {
     public function __construct(
-        private PersonRepository $personRepository,
-        private CompanyRepository $companyRepository,
-        private EntityRepository $entityRepository,
-        private CredentialRepository $credentialRepository
+        private PersonRepositoryInterface $personRepository,
+        private CompanyRepositoryInterface $companyRepository,
+        private EntityRepositoryInterface $entityRepository,
+        private CredentialRepositoryInterface $credentialRepository
     ) {}
 
     public function registerUser(array $data): array
@@ -53,5 +55,27 @@ class AuthService
                 'entity_type' => $data['type']
             ];
         });
+    }
+    public function login(array $credentials): array
+    {
+        $credential = $this->credentialRepository->findByEmail($credentials['email']);
+
+        if (!$credential || !Hash::check($credentials['password'], $credential->password)) {
+            throw new InvalidCredentialsException();
+        }
+
+        return $this->generateTokenResponse($credential);
+    }
+
+    private function generateTokenResponse($credential): array
+    {
+        $token = JWTAuth::fromUser($credential);
+        $expiresIn = JWTAuth::factory()->getTTL() * 60;
+
+        return [
+            'token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => $expiresIn
+        ];
     }
 }

@@ -11,4 +11,8 @@ class CredentialRepository implements CredentialRepositoryInterface
     {
         return Credential::create($data);
     }
+    public function findByEmail(string $email): ?Credential
+    {
+        return Credential::where('email', $email)->first();
+    }
 }

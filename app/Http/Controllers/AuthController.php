@@ -10,6 +10,7 @@ use App\Models\Entity;
 use App\Models\Person;
 use App\Models\Company;
 use App\Http\Requests\RegisterRequest;
+use App\Http\Requests\LoginRequest;
 use Illuminate\Support\Facades\DB;
 use App\Services\AuthService;
 
@@ -27,5 +28,11 @@ class AuthController extends Controller
         $response = $this->authService->registerUser($request->validated());
 
         return response()->json($response, 201);
+    }
+    public function login(LoginRequest $request)
+    {
+        $tokenData = $this->authService->login($request->validated());
+
+        return response()->json($tokenData);
     }
 }
