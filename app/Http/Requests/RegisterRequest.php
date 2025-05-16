@@ -27,6 +27,14 @@ class RegisterRequest extends FormRequest
                 'required',
 
             ],
+            'cpf' => [
+                'string',
+
+            ],
+            'cnpj' => [
+                'string',
+
+            ],
             'email' => [
                 'required',
                 'email',
