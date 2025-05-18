@@ -15,6 +15,9 @@ use App\Repositories\Eloquent\EntityRepository;
 use App\Repositories\Interfaces\CredentialRepositoryInterface;
 use App\Repositories\Eloquent\CredentialRepository;
 
+use App\Repositories\Interfaces\BankAccountRepositoryInterface;
+use App\Repositories\Eloquent\BankAccountRepository;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -26,6 +29,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(CompanyRepositoryInterface::class, CompanyRepository::class);
         $this->app->bind(EntityRepositoryInterface::class, EntityRepository::class);
         $this->app->bind(CredentialRepositoryInterface::class, CredentialRepository::class);
+        $this->app->bind(BankAccountRepositoryInterface::class, BankAccountRepository::class);
     }
 
     /**

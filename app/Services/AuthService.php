@@ -17,7 +17,8 @@ class AuthService
         private PersonRepositoryInterface $personRepository,
         private CompanyRepositoryInterface $companyRepository,
         private EntityRepositoryInterface $entityRepository,
-        private CredentialRepositoryInterface $credentialRepository
+        private CredentialRepositoryInterface $credentialRepository,
+        private BankAccountService $BankAccountService
     ) {}
 
     public function registerUser(array $data): array
@@ -50,6 +51,7 @@ class AuthService
                 'password' => Hash::make($data['password'])
             ]);
 
+            $this->BankAccountService->create($entity->id);
             return [
                 'message' => 'Cadastro realizado com sucesso',
                 'entity_type' => $data['type']

@@ -20,4 +20,10 @@ class Entity extends Model
     {
         return $this->hasOne(Credential::class);
     }
+
+    // Relação com BankAccount (1:1)
+    public function bankAccount()
+    {
+        return $this->hasOne(BankAccount::class);
+    }
 }
