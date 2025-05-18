@@ -12,11 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('bank_accounts', function (Blueprint $table) {
-            $table->id(); // Cria BIGINT PRIMARY KEY AUTO_INCREMENT
+            $table->uuid('id')->primary();
             $table->unsignedBigInteger('entity_id');
             $table->string('branch', 10);
             $table->string('account_number', 20)->unique();
-            $table->unsignedBigInteger('balance')->default(0); // em centavos
+            $table->unsignedBigInteger('balance')->default(0); // centavos
             $table->timestamps();
             $table->foreign('entity_id')
                 ->references('id')->on('entities')
