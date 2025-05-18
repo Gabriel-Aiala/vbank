@@ -18,7 +18,7 @@ return new class extends Migration
             $table->float('percentage_fee', 5, 2);
             $table->dateTime('start_at');
             $table->dateTime('end_at')->nullable();
-            $table->json('metadata');
+            $table->json('metadata')->nullable();
             $table->timestamps();
         });
     }
